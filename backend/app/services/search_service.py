@@ -1,6 +1,6 @@
-from parsers.search_google import get_sites
-from parsers.extract_emails import extract_emails_from_site
-from backend.app.models.result import save_result
+from app.parsers.search_google import get_sites
+from app.parsers.extract_emails import extract_emails_from_site
+from app.models.result import save_result
 
 async def run_search(query: str):
     """

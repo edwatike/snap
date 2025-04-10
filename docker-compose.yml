@@ -12,13 +12,6 @@ services:
     environment:
       - DATABASE_URL=postgresql://user:password@db:5432/snapdb
 
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-
   db:
     image: postgres:14
     environment:
@@ -29,21 +22,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
-  redis:
-    image: redis:alpine
-    ports:
-      - "6379:6379"
-
-  celery_worker:
-    build: ./backend
-    command: celery -A app.celery_worker.celery worker --loglevel=info
-    environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/b2b_service
-      - REDIS_URL=redis://redis:6379/0
-    depends_on:
-      - backend
-      - redis
 
 volumes:
   postgres_data: 

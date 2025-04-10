@@ -25,4 +25,4 @@ async def startup_event():
 
 @app.get("/")
 async def root():
-    return {"message": "B2B Search Service API"} 
+    return {"message": "Hello World"} 
