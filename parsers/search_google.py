@@ -4,6 +4,7 @@ import asyncio
 from typing import List, Dict
 import re
 import logging
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -78,3 +79,18 @@ class GoogleSearchParser:
         pattern = r"https?://(?:www\.)?([^/]+)"
         match = re.search(pattern, url)
         return match.group(1) if match else url 
+
+def get_sites(query: str) -> list:
+    headers = {"User-Agent": "Mozilla/5.0"}
+    search_url = f"https://www.google.com/search?q=site:+{query}"
+    res = requests.get(search_url, headers=headers)
+    soup = BeautifulSoup(res.text, "html.parser")
+
+    links = []
+    for tag in soup.select("a"):
+        href = tag.get("href")
+        if href and "/url?q=" in href:
+            link = href.split("/url?q=")[1].split("&")[0]
+            links.append(link)
+
+    return links[:10]  # ограничим для начала 
